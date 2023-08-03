@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Weather App</h1>
+        <form method="POST">
+            <input type="text" name="city" placeholder="Enter city">
+            <input type="submit" value="Get Weather">
+        </form>
+        <p>{{ message }}</p>
+        <p>Weather for {{ city }}: </p>
+        <p>Temperature: {{ temperature if temperature != 'N/A' else temperature }}°C</p>
+        <p>Description: {{ description }}</p>
+        {% for date, forecasts in forecast_list %}
+        <div class="day">
+            <h2>{{ date }}</h2>
+            <div class="forecast-container">
+                {% for forecast in forecasts %}
+                <div class="forecast">
+                    <img src="http://openweathermap.org/img/w/{{ forecast.weather[0].icon }}.png" alt="{{ forecast.weather[0].description }}">
+                    <p>{{ forecast.dt_txt }}</p>
+                    <p>{{ forecast.main.temp - 273.15 | round(2) }}°C</p>
+                    <p>{{ forecast.weather[0].description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
